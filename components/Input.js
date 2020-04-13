@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, Picker, View, Platform, Switch } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 import Text from './Text';
 import Colors from '../constants/Colors';
@@ -10,30 +11,17 @@ const Input = (props) => {
 	switch (props.type) {
 		case 'picker':
 			inputType = (
-				// <View
-				// 	style={
-				// 		Platform.OS === 'android'
-				// 			? {
-				// 					borderRadius: 5,
-				// 					overflow: 'hidden',
-				// 					borderWidth: 1,
-				// 					borderColor: Colors.grey,
-				// 					textAlign: 'center',
-				// 			  }
-				// 			: {}
-				// 	}
-				// >
-					<Picker
-						selectedValue={props.value}
-						style={styles.picker}
-						itemStyle={styles.itemStyle}
-                        onValueChange={(itemValue) => props.onChange(itemValue)}
-                        mode="dropdown"
-					>
-						<Picker.Item label="Daily" value="daily" />
-						<Picker.Item label="Any time" value="any" />
-					</Picker>
-				// </View>
+				<RNPickerSelect
+					placeholder={{}}
+					useNativeAndroidPickerStyle={false}
+					style={pickerSelectStyles}
+					value={props.value}
+					onValueChange={props.onChange}
+					items={[
+						{ label: 'Daily', value: 'daily' },
+						{ label: 'Any time', value: 'anyTime' },
+					]}
+				/>
 			);
 			break;
 		case 'switch':
@@ -53,7 +41,7 @@ const Input = (props) => {
 					selectionColor={Colors.accent}
 					style={props.repeat ? { ...styles.textInput, width: 50 } : styles.textInput}
 					onChangeText={props.onChange}
-                    value={props.value}
+					value={props.value}
 				/>
 			);
 	}
@@ -81,7 +69,7 @@ const styles = StyleSheet.create({
 	},
 	picker: {
 		height: Platform.OS === 'android' ? 50 : 50,
-        width: Platform.OS === 'android' ? 120 : 110,
+		width: Platform.OS === 'android' ? 120 : 110,
 		color: Colors.font,
 		borderColor: Colors.grey,
 		borderWidth: 1,
@@ -90,7 +78,7 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	itemStyle: {
-        color: Colors.font,
+		color: Colors.font,
 	},
 	textInput: {
 		color: Colors.font,
@@ -100,8 +88,33 @@ const styles = StyleSheet.create({
 		paddingVertical: 2,
 		paddingHorizontal: 4,
 		width: 200,
-        marginBottom: 10,
-        textAlign: 'center'
+		marginBottom: 10,
+		textAlign: 'center',
+	},
+});
+
+const pickerSelectStyles = StyleSheet.create({
+	inputIOS: {
+		fontSize: 16,
+		paddingVertical: 12,
+		paddingHorizontal: 10,
+		borderWidth: 1,
+		borderColor: Colors.grey,
+		borderRadius: 4,
+		color: 'white',
+		paddingRight: 30, // to ensure the text is never behind the icon
+		textAlign: 'center',
+	},
+	inputAndroid: {
+		fontSize: 16,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+		borderWidth: 1,
+		borderColor: Colors.grey,
+		borderRadius: 4,
+		color: 'white',
+		paddingRight: 30, // to ensure the text is never behind the icon
+		textAlign: 'center',
 	},
 });
 

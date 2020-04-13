@@ -1,54 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 
 import Colors from '../constants/Colors';
 import Text from './Text';
-import RadioButton from './RadioButton';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const TaskItem = (props) => {
-	const [isSelected, setIsSelected] = useState(false);
-	const [intervalStatus, setIntervalStatus] = useState(5);
-
-	useEffect(() => {
-		let timer;
-		let interval;
-
-		if (isSelected) {
-			timer = setTimeout(() => {
-				props.onSelect();
-			}, 5000);
-			interval = setInterval(() => {
-				setIntervalStatus((previousVal) => previousVal - 1);
-			}, 1000);
-		}
-
-		if (!isSelected) {
-			clearTimeout(timer);
-			clearInterval(interval);
-			setIntervalStatus(5);
-		}
-
-		return () => {
-			clearTimeout(timer);
-			clearInterval(interval);
-		};
-	}, [isSelected]);
+	const deleteHandler = () => {
+		Alert.alert('Are you sure?', 'Do you really want to delete this task?', [
+			{ text: 'No', style: 'default' },
+			{
+				text: 'Yes',
+				style: 'destructive',
+				onPress: () => {
+					props.onRemove();
+				},
+			},
+		]);
+	};
 
 	return (
-		<TouchableOpacity
-			style={styles.container}
-			activeOpacity={0.6}
-			onPress={() => setIsSelected((previousVal) => !previousVal)}
-		>
+		<View style={styles.container} activeOpacity={0.6}>
 			<View style={styles.group}>
-				<RadioButton selected={isSelected} />
 				<Text style={styles.title}>{props.title}</Text>
 			</View>
 			<View style={styles.group}>
-				<Text style={isSelected ? styles.countdown : {}}>{isSelected ? intervalStatus : ''}</Text>
+				<TouchableOpacity onPress={deleteHandler}>
+					<Text style={styles.countdown}>x</Text>
+				</TouchableOpacity>
 			</View>
-		</TouchableOpacity>
+		</View>
 	);
 };
 
@@ -69,7 +49,7 @@ const styles = StyleSheet.create({
 	countdown: {
 		fontSize: 18,
 		color: '#f44',
-		fontFamily: 'open-sans-bold'
+		fontFamily: 'open-sans-bold',
 	},
 });
 

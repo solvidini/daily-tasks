@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet, Button, Platform, FlatList, SafeAreaView } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,15 +6,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
 import Text from '../components/Text';
-import TaskItem from '../components/TaskItem';
+import DailyTaskItem from '../components/DailyTaskItem';
 import * as tasksActions from '../store/actions/tasks';
 
 const CurrentTasksScreen = (props) => {
-	const tasks = useSelector((state) => state.tasks.dailyTasks);
+	const anyTimeTasks = useSelector((state) => state.tasks.anyTimeTasks);
+	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	const fetchTasks = useCallback(() => {
 		dispatch(tasksActions.loadTasks());
+	}, [dispatch]);
+
+	useEffect(() => {
+		fetchTasks();
 	}, [dispatch]);
 
 	useEffect(() => {
@@ -29,11 +34,25 @@ const CurrentTasksScreen = (props) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
+			<Text style={styles.sectionTitle}>Daily Tasks</Text>
 			<FlatList
-				data={tasks}
+				data={dailyTasks}
 				keyExtractor={(task) => task.id.toString()}
 				renderItem={(taskData) => (
-					<TaskItem
+					<DailyTaskItem
+						title={taskData.item.title}
+						onSelect={() => {
+							dispatch(tasksActions.removeTask(taskData.item.id));
+						}}
+					/>
+				)}
+			/>
+			<Text style={styles.sectionTitle}>Any Time Tasks</Text>
+			<FlatList
+				data={anyTimeTasks}
+				keyExtractor={(task) => task.id.toString()}
+				renderItem={(taskData) => (
+					<DailyTaskItem
 						title={taskData.item.title}
 						onSelect={() => {
 							dispatch(tasksActions.removeTask(taskData.item.id));
@@ -65,10 +84,14 @@ export const screenOptions = (navData) => {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		padding: 10,
+		paddingHorizontal: 20,
+		paddingVertical: 10,
 		backgroundColor: 'black',
 		color: 'white',
 	},
+	sectionTitle: {
+		color: Colors.accent
+	}
 });
 
 export default CurrentTasksScreen;

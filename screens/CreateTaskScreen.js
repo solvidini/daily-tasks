@@ -55,7 +55,7 @@ const CreateTaskScreen = (props) => {
 
 	let options;
 
-	if (typeValue !== 'any' && isSequentialValue) {
+	if (typeValue !== 'anyTime' && isSequentialValue) {
 		options = (
 			<>
 				<Input label="Repeat?" type="switch" onChange={isSequentialChangeHandler} value={isSequentialValue} />

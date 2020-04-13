@@ -70,10 +70,10 @@ const TasksNavigator = () => {
 	return (
 		<TasksBottomTabNavigator.Navigator tabBarOptions={tabBarOptions}>
 			<TasksBottomTabNavigator.Screen
-				name="Daily"
+				name="Current"
 				component={DailyTasksNavigator}
 				options={{
-					tabBarLabel: 'Daily',
+					tabBarLabel: 'Current',
 					tabBarIcon: ({ color, size }) => {
 						return <Ionicons name="ios-list" color={color} size={size} />;
 					},
