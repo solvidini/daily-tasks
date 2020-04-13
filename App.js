@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
@@ -7,6 +8,17 @@ import ReduxThunk from 'redux-thunk';
 
 import tasksReducer from './store/reducers/tasks';
 import AppNavigator from './navigation/AppNavigator';
+import Colors from './constants/Colors';
+import { init } from './helpers/db';
+
+init()
+	.then(() => {
+		console.log('Initialized database');
+	})
+	.catch((err) => {
+		console.log('Initializing db failed.');
+		console.log(err);
+	});
 
 const rootReducer = combineReducers({
 	tasks: tasksReducer,
@@ -37,6 +49,7 @@ export default function App() {
 
 	return (
 		<Provider store={store}>
+			<StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
 			<AppNavigator />
 		</Provider>
 	);

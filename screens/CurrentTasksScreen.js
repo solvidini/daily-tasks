@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Button, Platform, FlatList, SafeAreaView } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,15 +10,28 @@ import TaskItem from '../components/TaskItem';
 import * as tasksActions from '../store/actions/tasks';
 
 const CurrentTasksScreen = (props) => {
-	const tasks = useSelector((state) => state.tasks.tasks);
-
+	const tasks = useSelector((state) => state.tasks.dailyTasks);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(tasksActions.loadTasks());
+	}, [dispatch]);
+
+	useEffect(() => {
+		const unsubscribe = props.navigation.addListener('focus', () => {
+			dispatch(tasksActions.loadTasks());
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, [dispatch]);
 
 	return (
 		<SafeAreaView style={styles.screen}>
 			<FlatList
 				data={tasks}
-				keyExtractor={(task) => task.id}
+				keyExtractor={(task) => task.id.toString()}
 				renderItem={(taskData) => (
 					<TaskItem
 						title={taskData.item.title}

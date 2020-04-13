@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginVertical: 8,
+		marginVertical: 10,
 		width: '96%',
 		marginHorizontal: '2%',
 	},
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
 	countdown: {
 		fontSize: 18,
 		color: '#f44',
+		fontFamily: 'open-sans-bold'
 	},
 });
 

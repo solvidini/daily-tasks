@@ -1,23 +1,32 @@
-import { CREATE_TASK, REMOVE_TASK } from '../actions/tasks';
+import { CREATE_TASK, REMOVE_TASK, SET_TASKS } from '../actions/tasks';
 import Task from '../../models/task';
 
 const initialState = {
-	tasks: [],
+	dailyTasks: [],
+	sequentialTasks: [],
+	anyTimeTasks: [],
 };
 
 export default (state = initialState, action) => {
 	switch (action.type) {
+		case SET_TASKS:
+			const allTasks = action.tasks;
+			return {
+				...state,
+				dailyTasks: allTasks,
+			};
+			
 		case CREATE_TASK:
 			const newTask = new Task(action.id, action.title);
 			return {
 				...state,
-				tasks: state.tasks.concat(newTask),
+				dailyTasks: state.dailyTasks.concat(newTask),
 			};
 
 		case REMOVE_TASK:
 			return {
 				...state,
-				tasks: state.tasks.filter((task) => task.id !== action.id),
+				dailyTasks: state.dailyTasks.filter((task) => task.id !== action.id),
 			};
 
 		default:

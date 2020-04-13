@@ -7,6 +7,7 @@ Main technologies I used to create this app:
 * React Native
 * Expo
 * Redux
+* SQLite
 
 &other
 	
