@@ -38,6 +38,24 @@ export const insertTask = (title, type, isSequential, date, sequentialInterval) 
 	return promise;
 };
 
+export const updateTaskDate = (id, date) => {
+	const promise = new Promise((resolve, reject) => {
+		db.transaction((tx) => {
+			tx.executeSql(
+				`UPDATE tasks SET date=? WHERE id=? `,
+				[date, id],
+				(_, result) => {
+					resolve(result);
+				},
+				(_, err) => {
+					reject(err);
+				}
+			);
+		});
+	});
+	return promise;
+};
+
 export const deleteTask = (id) => {
 	const promise = new Promise((resolve, reject) => {
 		db.transaction((tx) => {

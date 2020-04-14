@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 
 import Colors from '../constants/Colors';
 import Text from './Text';
@@ -18,15 +18,42 @@ const TaskItem = (props) => {
 		]);
 	};
 
+	let options;
+
+	if (props.task.type !== 'anyTime' && props.task.isSequential) {
+		options = (
+			<>
+				<View style={styles.group}>
+					<Text style={styles.fieldTitle}>Task date: </Text>
+					<Text>{props.task.readableDate}</Text>
+				</View>
+				<View style={styles.group}>
+					<Text style={styles.fieldTitle}>Repeat every </Text>
+					<Text>{props.task.sequentialInterval}</Text>
+					<Text style={styles.fieldTitle}> days.</Text>
+				</View>
+			</>
+		);
+	} else if (props.task.type !== 'anyTime' && !props.task.isSequential) {
+		options = (
+			<>
+				<View style={styles.group}>
+					<Text style={styles.fieldTitle}>Task date: </Text>
+					<Text>{props.task.readableDate}</Text>
+				</View>
+			</>
+		);
+	}
+
 	return (
 		<View style={styles.container} activeOpacity={0.6}>
 			<View style={styles.group}>
-				<Text style={styles.title}>{props.title}</Text>
+				<Text style={styles.fieldTitle}>Title: </Text>
+				<Text>{props.task.title}</Text>
 			</View>
-			<View style={styles.group}>
-				<TouchableOpacity onPress={deleteHandler}>
-					<Text style={styles.countdown}>x</Text>
-				</TouchableOpacity>
+			{options}
+			<View style={styles.buttonContainer}>
+				<Button color={Colors.danger} title="REMOVE" onPress={deleteHandler} />
 			</View>
 		</View>
 	);
@@ -34,22 +61,26 @@ const TaskItem = (props) => {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginVertical: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		borderRadius: 10,
 		width: '96%',
 		marginHorizontal: '2%',
+        backgroundColor: Colors.primary,
+        overflow: 'hidden'
 	},
 	group: {
 		flexDirection: 'row',
+		marginVertical: 2,
 	},
-	title: {
-		marginLeft: 10,
+	fieldTitle: {
+		color: Colors.accent,
+		marginHorizontal: 5,
 	},
-	countdown: {
-		fontSize: 18,
-		color: '#f44',
-		fontFamily: 'open-sans-bold',
+	buttonContainer: {
+		alignItems: 'flex-end',
 	},
 });
 

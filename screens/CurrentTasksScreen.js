@@ -42,7 +42,9 @@ const CurrentTasksScreen = (props) => {
 					<DailyTaskItem
 						title={taskData.item.title}
 						onSelect={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
+							taskData.item.isSequential
+								? dispatch(tasksActions.updateTask(taskData.item.id))
+								: dispatch(tasksActions.removeTask(taskData.item.id));
 						}}
 					/>
 				)}
@@ -90,8 +92,8 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 	sectionTitle: {
-		color: Colors.accent
-	}
+		color: Colors.accent,
+	},
 });
 
 export default CurrentTasksScreen;

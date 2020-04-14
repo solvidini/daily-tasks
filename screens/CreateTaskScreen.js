@@ -10,38 +10,39 @@ import * as TasksActions from '../store/actions/tasks';
 import Input from '../components/Input';
 
 const CreateTaskScreen = (props) => {
-	const [titleValue, setTitleValue] = useState('');
-	const [typeValue, setTypeValue] = useState('daily');
-	const [isSequentialValue, setIsSequentialValue] = useState(false);
-	const [dateValue, setDateValue] = useState(new Date());
-	const [sequentialIntervalValue, setSequentialIntervalValue] = useState('');
+	const [title, setTitle] = useState('');
+	const [type, setType] = useState('daily');
+	const [isSequential, setIsSequential] = useState(false);
+	const [date, setDate] = useState(new Date());
+	const [sequentialInterval, setSequentialInterval] = useState('');
 
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const dispatch = useDispatch();
 
 	const titleChangeHandler = (text) => {
-		setTitleValue(text);
+		setTitle(text);
 	};
 
 	const typeChangeHandler = (text) => {
-		setTypeValue(text);
+		setType(text);
 	};
 
 	const isSequentialChangeHandler = (text) => {
-		setIsSequentialValue(text);
+		setIsSequential(text);
 	};
 
 	const dateChangeHandler = (selectedDate) => {
 		hideDatePicker();
-		setDateValue(selectedDate);
+		setDate(selectedDate);
 	};
 
 	const sequentialIntervalChangeHandler = (text) => {
-		setSequentialIntervalValue(text);
+		const transformedText = text.toString().replace(/[^0-9]/g, '');
+		setSequentialInterval(transformedText);
 	};
 
 	const createTaskHandler = () => {
-		dispatch(TasksActions.createTask(titleValue, typeValue, isSequentialValue, dateValue, sequentialIntervalValue));
+		dispatch(TasksActions.createTask(title, type, isSequential, date, sequentialInterval));
 		props.navigation.goBack();
 	};
 
@@ -55,30 +56,37 @@ const CreateTaskScreen = (props) => {
 
 	let options;
 
-	if (typeValue !== 'anyTime' && isSequentialValue) {
+	if (type !== 'anyTime' && isSequential) {
 		options = (
 			<>
-				<Input label="Repeat?" type="switch" onChange={isSequentialChangeHandler} value={isSequentialValue} />
+				<Input
+					label="Repeat?"
+					type="switch"
+					onChange={isSequentialChangeHandler}
+					value={isSequential}
+					maxLength={24}
+				/>
 				<Input
 					label="Repeat every"
 					repeat
 					onChange={sequentialIntervalChangeHandler}
-					value={sequentialIntervalValue}
+					value={sequentialInterval}
 					keyboardType="numeric"
+					maxLength={3}
 				/>
 				<View style={styles.formControl}>
 					<Text style={styles.label}>When?</Text>
 					<TouchableHighlight style={styles.datePickerButton} title="Select date" onPress={showDatePicker}>
 						<Text style={styles.dateText}>
-							{new Date(dateValue).getDate().toString() +
+							{new Date(date).getDate().toString() +
 								'-' +
-								new Date(dateValue).getMonth().toString() +
+								new Date(date).getMonth().toString() +
 								'-' +
-								new Date(dateValue).getFullYear().toString()}
+								new Date(date).getFullYear().toString()}
 						</Text>
 					</TouchableHighlight>
 					<DateTimePickerModal
-						date={dateValue}
+						date={date}
 						isVisible={isDatePickerVisible}
 						mode="date"
 						onConfirm={dateChangeHandler}
@@ -87,23 +95,23 @@ const CreateTaskScreen = (props) => {
 				</View>
 			</>
 		);
-	} else if (typeValue !== 'any' && !isSequentialValue) {
+	} else if (type !== 'anyTime' && !isSequential) {
 		options = (
 			<>
-				<Input label="Repeat?" type="switch" onChange={isSequentialChangeHandler} value={isSequentialValue} />
+				<Input label="Repeat?" type="switch" onChange={isSequentialChangeHandler} value={isSequential} />
 				<View style={styles.formControl}>
 					<Text style={styles.label}>When?</Text>
 					<TouchableHighlight style={styles.datePickerButton} title="Select date" onPress={showDatePicker}>
 						<Text style={styles.dateText}>
-							{new Date(dateValue).getDate().toString() +
+							{new Date(date).getDate().toString() +
 								'-' +
-								new Date(dateValue).getMonth().toString() +
+								new Date(date).getMonth().toString() +
 								'-' +
-								new Date(dateValue).getFullYear().toString()}
+								new Date(date).getFullYear().toString()}
 						</Text>
 					</TouchableHighlight>
 					<DateTimePickerModal
-						date={dateValue}
+						date={date}
 						isVisible={isDatePickerVisible}
 						mode="date"
 						onConfirm={dateChangeHandler}
@@ -117,8 +125,8 @@ const CreateTaskScreen = (props) => {
 	return (
 		<KeyboardAwareScrollView style={styles.screen}>
 			<View style={styles.form}>
-				<Input label="Title" onChange={titleChangeHandler} value={titleValue} />
-				<Input label="Type" type="picker" onChange={typeChangeHandler} value={typeValue} />
+				<Input label="Title" onChange={titleChangeHandler} value={title} maxLength={36} />
+				<Input label="Type" type="picker" onChange={typeChangeHandler} value={type} />
 				{options}
 
 				<View style={styles.buttonContainer}>

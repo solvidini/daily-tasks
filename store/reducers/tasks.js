@@ -1,4 +1,4 @@
-import { CREATE_TASK, REMOVE_TASK, SET_TASKS } from '../actions/tasks';
+import { CREATE_TASK, REMOVE_TASK, SET_TASKS, UPDATE_TASK } from '../actions/tasks';
 import Task from '../../models/task';
 import isToday from '../../helpers/helperFunctions';
 
@@ -61,6 +61,22 @@ export default (state = initialState, action) => {
 				sequentialTasks: state.sequentialTasks.filter((task) => task.id !== action.id),
 				anyTimeTasks: state.anyTimeTasks.filter((task) => task.id !== action.id),
 				allTasks: state.allTasks.filter((task) => task.id !== action.id),
+			};
+
+		case UPDATE_TASK:
+			const updatedAllTasks = [...state.allTasks];
+			const allTasksIndex = updatedAllTasks.findIndex((task) => task.id === action.id);
+			updatedAllTasks[allTasksIndex].date = action.newDate;
+
+			const updatedSequentialTasks = [...state.sequentialTasks];
+			const sequentialTasksIndex = updatedSequentialTasks.findIndex((task) => task.id === action.id);
+			updatedSequentialTasks[sequentialTasksIndex].date = action.newDate;
+
+			return {
+				...state,
+				dailyTasks: state.dailyTasks.filter((task) => task.id !== action.id),
+				allTasks: updatedAllTasks,
+				sequentialTasks: updatedSequentialTasks,
 			};
 
 		default:

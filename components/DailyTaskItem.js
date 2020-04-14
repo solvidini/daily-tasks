@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import Text from './Text';
 import RadioButton from './RadioButton';
+import Colors from '../constants/Colors';
 
 const DailyTaskItem = (props) => {
 	const [isSelected, setIsSelected] = useState(false);
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
 	},
 	countdown: {
 		fontSize: 18,
-		color: '#f44',
+		color: Colors.danger,
 		fontFamily: 'open-sans-bold',
 	},
 });

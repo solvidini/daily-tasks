@@ -1,8 +1,11 @@
+import moment from 'moment';
+
 export const CREATE_TASK = 'CREATE_TASK';
 export const REMOVE_TASK = 'REMOVE_TASK';
+export const UPDATE_TASK = 'UPDATE_TASK';
 export const SET_TASKS = 'SET_TASKS';
 
-import { fetchTasks, insertTask, deleteTask } from '../../helpers/db';
+import { fetchTasks, insertTask, deleteTask, updateTaskDate } from '../../helpers/db';
 import { isToday } from '../../helpers/helperFunctions';
 import Task from '../../models/task';
 
@@ -41,6 +44,29 @@ export const removeTask = (id) => {
 	};
 };
 
+export const updateTask = (id) => {
+	return async (dispatch, getState) => {
+		const allTasks = getState().tasks.allTasks;
+		const task = allTasks.find((t) => t.id === id);
+
+		const oldDate = task.date;
+		const newDate = moment(oldDate).add(task.sequentialInterval, 'days');
+
+		try {
+			await updateTaskDate(id, newDate.toISOString());
+			dispatch({
+				type: UPDATE_TASK,
+				id: id,
+				newDate: newDate,
+			});
+			loadTasks();
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	};
+};
+
 export const loadTasks = () => {
 	return async (dispatch) => {
 		try {
@@ -60,7 +86,6 @@ export const loadTasks = () => {
 					)
 				);
 			}
-			console.log(loadedResults);
 
 			const dailyTasks = loadedResults.filter((task) => isToday(task.date) && task.type === 'daily');
 			const sequentialTasks = loadedResults.filter((task) => task.isSequential && task.type === 'daily');

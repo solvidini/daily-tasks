@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Button, Platform, FlatList, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Button, Platform, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -10,10 +10,10 @@ import TaskItem from '../components/TaskItem';
 import * as tasksActions from '../store/actions/tasks';
 
 const AllTasksScreen = (props) => {
-	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);
 	const sequentialTasks = useSelector((state) => state.tasks.sequentialTasks);
-	const anyTimeTasks = useSelector((state) => state.tasks.anyTimeTasks);
 	const allTasks = useSelector((state) => state.tasks.allTasks);
+	const [showSequentialTasks, setShowSequentialTasks] = useState(true);
+	const [showAllTasks, setShowAllTasks] = useState(false);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -32,58 +32,56 @@ const AllTasksScreen = (props) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
-			<Text style={styles.sectionTitle}>Daily Tasks</Text>
-			<FlatList
-				data={dailyTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<TaskItem
-						title={taskData.item.title}
-						onRemove={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
-			<Text style={styles.sectionTitle}>Any Time Tasks</Text>
-			<FlatList
-				data={anyTimeTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<TaskItem
-						title={taskData.item.title}
-						onRemove={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
-			<Text style={styles.sectionTitle}>Sequential Tasks</Text>
-			<FlatList
-				data={sequentialTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<TaskItem
-						title={taskData.item.title}
-						onRemove={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
-			<Text style={styles.sectionTitle}>All Tasks</Text>
-			<FlatList
-				data={allTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<TaskItem
-						title={taskData.item.title}
-						onRemove={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
+			<View style={styles.group}>
+				<Text style={styles.sectionTitle}>Sequential Tasks</Text>
+				<TouchableOpacity
+					activeOpacity={0.6}
+					onPress={() => {
+						setShowSequentialTasks((previousValue) => !previousValue);
+					}}
+				>
+					<Text>{showSequentialTasks ? 'Hide List' : 'Show List'}</Text>
+				</TouchableOpacity>
+			</View>
+			{showSequentialTasks && (
+				<FlatList
+					data={sequentialTasks}
+					keyExtractor={(task) => task.id.toString()}
+					renderItem={(taskData) => (
+						<TaskItem
+							task={taskData.item}
+							onRemove={() => {
+								dispatch(tasksActions.removeTask(taskData.item.id));
+							}}
+						/>
+					)}
+				/>
+			)}
+			<View style={styles.group}>
+				<Text style={styles.sectionTitle}>All Tasks</Text>
+				<TouchableOpacity
+					activeOpacity={0.6}
+					onPress={() => {
+						setShowAllTasks((previousValue) => !previousValue);
+					}}
+				>
+					<Text>{showAllTasks ? 'Hide List' : 'Show List'}</Text>
+				</TouchableOpacity>
+			</View>
+			{showAllTasks && (
+				<FlatList
+					data={allTasks}
+					keyExtractor={(task) => task.id.toString()}
+					renderItem={(taskData) => (
+						<TaskItem
+							task={taskData.item}
+							onRemove={() => {
+								dispatch(tasksActions.removeTask(taskData.item.id));
+							}}
+						/>
+					)}
+				/>
+			)}
 		</SafeAreaView>
 	);
 };
@@ -112,6 +110,12 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		backgroundColor: 'black',
 		color: 'white',
+		justifyContent: 'flex-start',
+	},
+	group: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginVertical: 2,
 	},
 	sectionTitle: {
 		color: Colors.accent,

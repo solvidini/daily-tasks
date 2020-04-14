@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Task {
 	constructor(id, title, type, isSequential, date, sequentialInterval) {
 		this.id = id;
@@ -6,6 +8,10 @@ class Task {
 		this.isSequential = isSequential;
 		this.date = date;
 		this.sequentialInterval = sequentialInterval;
+	}
+
+	get readableDate() {
+		return moment(this.date).format('MMMM Do YYYY');
 	}
 }
 
