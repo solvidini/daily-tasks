@@ -1,22 +1,36 @@
 {
 	"expo": {
-		"name": "daily-tasks",
+		"name": "Daily Tasks",
+		"description": "In this app you can configure your tasks for a specific day and also add repetition for a specific period of time, so you won't forget about your duties and get the job done.",
 		"slug": "daily-tasks",
-		"platforms": ["ios", "android", "web"],
+		"privacy": "public",
+		"platforms": ["ios", "android"],
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/icon.png",
+		"icon": "./assets/daily-tasks.png",
 		"splash": {
-			"image": "./assets/splash.png",
+			"image": "./assets/daily-splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#000"
+			"backgroundColor": "#101010"
 		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true
+			"bundleIdentifier": "pl.samuelk.daily-tasks",
+			"buildNumber": "1.0.0",
+			"supportsTablet": true,
+			"userInterfaceStyle": "dark"
+		},
+		"android": {
+			"package": "pl.samuelk.daily_tasks",
+			"versionCode": 1,
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/daily-adaptive.png",
+				"backgroundColor": "#101010"
+			},
+			"permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
 		}
 	}
 }
