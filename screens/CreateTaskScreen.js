@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Switch, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Button, TouchableHighlight, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -16,32 +16,59 @@ const CreateTaskScreen = (props) => {
 	const [date, setDate] = useState(new Date());
 	const [sequentialInterval, setSequentialInterval] = useState('');
 
+	const [titleValidity, setTitleValidity] = useState(false);
+	const [sequentialIntervalValidity, setSequentialIntervalValidity] = useState(false);
+
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const dispatch = useDispatch();
 
-	const titleChangeHandler = (text) => {
+	const titleChangeHandler = (text, isValid) => {
 		setTitle(text);
+		setTitleValidity(isValid);
 	};
 
 	const typeChangeHandler = (text) => {
+		console.log(text);
 		setType(text);
 	};
 
 	const isSequentialChangeHandler = (text) => {
+		console.log(text);
 		setIsSequential(text);
 	};
 
 	const dateChangeHandler = (selectedDate) => {
+		if (Math.floor(new Date().getTime() / 1000) - 100 > Math.floor(new Date(selectedDate).getTime() / 1000)) {
+			Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
+				{
+					text: 'Ok',
+					style: 'default',
+					onPress: () => {
+						hideDatePicker();
+					},
+				},
+			]);
+			return;
+		}
 		hideDatePicker();
 		setDate(selectedDate);
 	};
 
-	const sequentialIntervalChangeHandler = (text) => {
-		const transformedText = text.toString().replace(/[^0-9]/g, '');
-		setSequentialInterval(transformedText);
+	const sequentialIntervalChangeHandler = (text, isValid) => {
+		setSequentialInterval(text);
+		setSequentialIntervalValidity(isValid);
 	};
 
-	const createTaskHandler = () => {
+	const submitHandler = () => {
+		if (titleValidity && type === 'anyTime') {
+			dispatch(TasksActions.createTask(title, type, isSequential, date, sequentialInterval));
+			props.navigation.goBack();
+			return;
+		}
+		if (!titleValidity || (isSequential && !sequentialIntervalValidity)) {
+			Alert.alert('Wrong input!', 'Please check the errors in the form.', [{ text: 'Okay' }]);
+			return;
+		}
 		dispatch(TasksActions.createTask(title, type, isSequential, date, sequentialInterval));
 		props.navigation.goBack();
 	};
@@ -62,17 +89,22 @@ const CreateTaskScreen = (props) => {
 				<Input
 					label="Repeat?"
 					type="switch"
-					onChange={isSequentialChangeHandler}
+					initiallyValid
+					onInputChange={isSequentialChangeHandler}
+					initialValue={false}
 					value={isSequential}
 					maxLength={24}
 				/>
 				<Input
 					label="Repeat every"
 					repeat
-					onChange={sequentialIntervalChangeHandler}
+					required
+					errorText="Days field must be greater than 0."
+					onInputChange={sequentialIntervalChangeHandler}
 					value={sequentialInterval}
 					keyboardType="numeric"
 					maxLength={3}
+					min={1}
 				/>
 				<View style={styles.formControl}>
 					<Text style={styles.label}>When?</Text>
@@ -89,6 +121,7 @@ const CreateTaskScreen = (props) => {
 						date={date}
 						isVisible={isDatePickerVisible}
 						mode="date"
+						isDarkModeEnabled
 						onConfirm={dateChangeHandler}
 						onCancel={hideDatePicker}
 					/>
@@ -98,7 +131,14 @@ const CreateTaskScreen = (props) => {
 	} else if (type !== 'anyTime' && !isSequential) {
 		options = (
 			<>
-				<Input label="Repeat?" type="switch" onChange={isSequentialChangeHandler} value={isSequential} />
+				<Input
+					label="Repeat?"
+					type="switch"
+					initialValue={false}
+					initiallyValid
+					onInputChange={isSequentialChangeHandler}
+					value={isSequential}
+				/>
 				<View style={styles.formControl}>
 					<Text style={styles.label}>When?</Text>
 					<TouchableHighlight style={styles.datePickerButton} title="Select date" onPress={showDatePicker}>
@@ -125,12 +165,25 @@ const CreateTaskScreen = (props) => {
 	return (
 		<KeyboardAwareScrollView style={styles.screen}>
 			<View style={styles.form}>
-				<Input label="Title" onChange={titleChangeHandler} value={title} maxLength={36} />
-				<Input label="Type" type="picker" onChange={typeChangeHandler} value={type} />
+				<Input
+					label="Title"
+					required
+					errorText="Title field cannot be empty."
+					onInputChange={titleChangeHandler}
+					value={title}
+					maxLength={36}
+				/>
+				<Input
+					label="Type"
+					type="picker"
+					initialValue="daily"
+					initiallyValid
+					onInputChange={typeChangeHandler}
+					value={type}
+				/>
 				{options}
-
 				<View style={styles.buttonContainer}>
-					<Button color={Colors.accent} title="CREATE" onPress={createTaskHandler} />
+					<Button color={Colors.accent} title="CREATE" onPress={submitHandler} />
 				</View>
 			</View>
 		</KeyboardAwareScrollView>

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { AppLoading } from 'expo';
+import { AppLoading, Constants, Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 import * as Font from 'expo-font';
 import ReduxThunk from 'redux-thunk';
 
+import NotificationsManager from './NotificationsManager';
 import tasksReducer from './store/reducers/tasks';
 import AppNavigator from './navigation/AppNavigator';
 import Colors from './constants/Colors';
@@ -50,7 +52,9 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
-			<AppNavigator />
+			<NotificationsManager>
+				<AppNavigator />
+			</NotificationsManager>
 		</Provider>
 	);
 }

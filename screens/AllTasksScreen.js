@@ -32,55 +32,90 @@ const AllTasksScreen = (props) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
-			<View style={styles.group}>
-				<Text style={styles.sectionTitle}>Sequential Tasks</Text>
-				<TouchableOpacity
-					activeOpacity={0.6}
-					onPress={() => {
-						setShowSequentialTasks((previousValue) => !previousValue);
-					}}
-				>
-					<Text>{showSequentialTasks ? 'Hide List' : 'Show List'}</Text>
-				</TouchableOpacity>
-			</View>
-			{showSequentialTasks && (
-				<FlatList
-					data={sequentialTasks}
-					keyExtractor={(task) => task.id.toString()}
-					renderItem={(taskData) => (
-						<TaskItem
-							task={taskData.item}
-							onRemove={() => {
-								dispatch(tasksActions.removeTask(taskData.item.id));
-							}}
-						/>
-					)}
-				/>
+			{!showSequentialTasks && (
+				<View style={styles.group}>
+					<Text style={styles.sectionTitle}>Sequential Tasks</Text>
+					<TouchableOpacity
+						activeOpacity={0.6}
+						onPress={() => {
+							setShowSequentialTasks((previousValue) => !previousValue);
+						}}
+					>
+						<Text>Show List</Text>
+					</TouchableOpacity>
+				</View>
 			)}
-			<View style={styles.group}>
-				<Text style={styles.sectionTitle}>All Tasks</Text>
-				<TouchableOpacity
-					activeOpacity={0.6}
-					onPress={() => {
-						setShowAllTasks((previousValue) => !previousValue);
-					}}
-				>
-					<Text>{showAllTasks ? 'Hide List' : 'Show List'}</Text>
-				</TouchableOpacity>
-			</View>
-			{showAllTasks && (
-				<FlatList
-					data={allTasks}
-					keyExtractor={(task) => task.id.toString()}
-					renderItem={(taskData) => (
-						<TaskItem
-							task={taskData.item}
-							onRemove={() => {
-								dispatch(tasksActions.removeTask(taskData.item.id));
+			{!showAllTasks && (
+				<View style={styles.group}>
+					<Text style={styles.sectionTitle}>All Tasks</Text>
+					<TouchableOpacity
+						activeOpacity={0.6}
+						onPress={() => {
+							setShowAllTasks((previousValue) => !previousValue);
+						}}
+					>
+						<Text>Show List</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+			{showSequentialTasks && (
+				<>
+					<View style={styles.group}>
+						<Text style={styles.sectionTitle}>Sequential Tasks</Text>
+						<TouchableOpacity
+							activeOpacity={0.6}
+							onPress={() => {
+								setShowSequentialTasks((previousValue) => !previousValue);
 							}}
+						>
+							<Text>Hide List</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={!showAllTasks && showSequentialTasks ? {} : styles.list}>
+						<FlatList
+							data={sequentialTasks}
+							keyExtractor={(task) => task.id.toString()}
+							renderItem={(taskData) => (
+								<TaskItem
+									task={taskData.item}
+									onRemove={() => {
+										dispatch(tasksActions.removeTask(taskData.item.id));
+									}}
+								/>
+							)}
 						/>
-					)}
-				/>
+					</View>
+				</>
+			)}
+			{showAllTasks && (
+				<>
+					<View style={styles.group}>
+						<Text style={styles.sectionTitle}>All Tasks</Text>
+						<TouchableOpacity
+							activeOpacity={0.6}
+							onPress={() => {
+								setShowAllTasks((previousValue) => !previousValue);
+							}}
+						>
+							<Text>Hide List</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={showAllTasks && !showSequentialTasks ? {} : styles.list}>
+						<FlatList
+							contentContainerStyle={{ paddingBottom: 45 }}
+							data={allTasks}
+							keyExtractor={(task) => task.id.toString()}
+							renderItem={(taskData) => (
+								<TaskItem
+									task={taskData.item}
+									onRemove={() => {
+										dispatch(tasksActions.removeTask(taskData.item.id));
+									}}
+								/>
+							)}
+						/>
+					</View>
+				</>
 			)}
 		</SafeAreaView>
 	);
@@ -88,7 +123,7 @@ const AllTasksScreen = (props) => {
 
 export const screenOptions = (navData) => {
 	return {
-		headerTitle: 'All Your Tasks',
+		headerTitle: 'All Tasks',
 		headerRight: () => (
 			<HeaderButtons HeaderButtonComponent={HeaderButton}>
 				<Item
@@ -111,6 +146,9 @@ const styles = StyleSheet.create({
 		backgroundColor: 'black',
 		color: 'white',
 		justifyContent: 'flex-start',
+	},
+	list: {
+		height: '50%',
 	},
 	group: {
 		flexDirection: 'row',

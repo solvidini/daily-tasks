@@ -34,34 +34,38 @@ const CurrentTasksScreen = (props) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
-			<Text style={styles.sectionTitle}>Daily Tasks</Text>
-			<FlatList
-				data={dailyTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<DailyTaskItem
-						title={taskData.item.title}
-						onSelect={() => {
-							taskData.item.isSequential
-								? dispatch(tasksActions.updateTask(taskData.item.id))
-								: dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
-			<Text style={styles.sectionTitle}>Any Time Tasks</Text>
-			<FlatList
-				data={anyTimeTasks}
-				keyExtractor={(task) => task.id.toString()}
-				renderItem={(taskData) => (
-					<DailyTaskItem
-						title={taskData.item.title}
-						onSelect={() => {
-							dispatch(tasksActions.removeTask(taskData.item.id));
-						}}
-					/>
-				)}
-			/>
+			<View style={styles.section}>
+				<Text style={styles.sectionTitle}>Tasks left for today</Text>
+				<FlatList
+					data={dailyTasks}
+					keyExtractor={(task) => task.id.toString()}
+					renderItem={(taskData) => (
+						<DailyTaskItem
+							title={taskData.item.title}
+							onSelect={() => {
+								taskData.item.isSequential
+									? dispatch(tasksActions.updateTask(taskData.item.id))
+									: dispatch(tasksActions.removeTask(taskData.item.id));
+							}}
+						/>
+					)}
+				/>
+			</View>
+			<View style={styles.section}>
+				<Text style={styles.sectionTitle}>Any time tasks</Text>
+				<FlatList
+					data={anyTimeTasks}
+					keyExtractor={(task) => task.id.toString()}
+					renderItem={(taskData) => (
+						<DailyTaskItem
+							title={taskData.item.title}
+							onSelect={() => {
+								dispatch(tasksActions.removeTask(taskData.item.id));
+							}}
+						/>
+					)}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 };
@@ -90,6 +94,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		backgroundColor: 'black',
 		color: 'white',
+	},
+	section: {
+		height: '50%',
 	},
 	sectionTitle: {
 		color: Colors.accent,
