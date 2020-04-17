@@ -11,20 +11,10 @@ const NotificationsManager = (props) => {
 	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);
 
 	useEffect(() => {
-		let listener;
+		verifyPermissions();
 
-		const verifyAndListen = async () => {
-			const hasPermission = await verifyPermissions();
-			if (hasPermission) {
-				listener = Notifications.addListener(handleNotification);
-			}
-		};
-
-		verifyAndListen();
-
-		if (listener) {
-			return () => listener.remove();
-		}
+		const listener = Notifications.addListener(handleNotification);
+		return () => listener.remove();
 	}, []);
 
 	useEffect(() => {

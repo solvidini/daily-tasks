@@ -36,18 +36,18 @@ const CreateTaskScreen = (props) => {
 	};
 
 	const dateChangeHandler = (selectedDate) => {
-		// if (new Date().setHours(0, 0, 0, 0) > new Date(selectedDate).getTime()) {
-		// 	Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
-		// 		{
-		// 			text: 'Ok',
-		// 			style: 'default',
-		// 			onPress: () => {
-		// 				hideDatePicker();
-		// 			},
-		// 		},
-		// 	]);
-		// 	return;
-		// }
+		if (new Date().setHours(0, 0, 0, 0) > new Date(selectedDate).getTime()) {
+			Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
+				{
+					text: 'Ok',
+					style: 'default',
+					onPress: () => {
+						hideDatePicker();
+					},
+				},
+			]);
+			return;
+		}
 		hideDatePicker();
 		setDate(selectedDate);
 	};
