@@ -32,47 +32,26 @@ const AllTasksScreen = (props) => {
 
 	return (
 		<SafeAreaView style={styles.screen}>
-			{!showSequentialTasks && (
-				<View style={styles.group}>
-					<Text style={styles.sectionTitle}>Sequential Tasks</Text>
-					<TouchableOpacity
-						activeOpacity={0.6}
-						onPress={() => {
-							setShowSequentialTasks((previousValue) => !previousValue);
-						}}
-					>
-						<Text>Show List</Text>
-					</TouchableOpacity>
-				</View>
-			)}
-			{!showAllTasks && (
-				<View style={styles.group}>
-					<Text style={styles.sectionTitle}>All Tasks</Text>
-					<TouchableOpacity
-						activeOpacity={0.6}
-						onPress={() => {
-							setShowAllTasks((previousValue) => !previousValue);
-						}}
-					>
-						<Text>Show List</Text>
-					</TouchableOpacity>
-				</View>
-			)}
+			<View style={styles.group}>
+				<Text style={styles.sectionTitle}></Text>
+				<TouchableOpacity
+					activeOpacity={0.6}
+					onPress={() => {
+						setShowSequentialTasks((previousValue) => !previousValue);
+						setShowAllTasks((previousValue) => !previousValue);
+					}}
+				>
+					<Text>{showAllTasks ? 'Show Sequential Tasks' : 'Show All Tasks'}</Text>
+				</TouchableOpacity>
+			</View>
 			{showSequentialTasks && (
 				<>
 					<View style={styles.group}>
-						<Text style={styles.sectionTitle}>Sequential Tasks</Text>
-						<TouchableOpacity
-							activeOpacity={0.6}
-							onPress={() => {
-								setShowSequentialTasks((previousValue) => !previousValue);
-							}}
-						>
-							<Text>Hide List</Text>
-						</TouchableOpacity>
+						<Text style={styles.sectionTitle}>Sequential Tasks:</Text>
 					</View>
 					<View style={!showAllTasks && showSequentialTasks ? {} : styles.list}>
 						<FlatList
+							contentContainerStyle={{ paddingBottom: 45 }}
 							data={sequentialTasks}
 							keyExtractor={(task) => task.id.toString()}
 							renderItem={(taskData) => (
@@ -90,15 +69,7 @@ const AllTasksScreen = (props) => {
 			{showAllTasks && (
 				<>
 					<View style={styles.group}>
-						<Text style={styles.sectionTitle}>All Tasks</Text>
-						<TouchableOpacity
-							activeOpacity={0.6}
-							onPress={() => {
-								setShowAllTasks((previousValue) => !previousValue);
-							}}
-						>
-							<Text>Hide List</Text>
-						</TouchableOpacity>
+						<Text style={styles.sectionTitle}>All Tasks:</Text>
 					</View>
 					<View style={showAllTasks && !showSequentialTasks ? {} : styles.list}>
 						<FlatList

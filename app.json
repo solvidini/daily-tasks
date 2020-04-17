@@ -1,15 +1,15 @@
 {
 	"expo": {
 		"name": "Daily Tasks",
-		"description": "In this app you can configure your tasks for a specific day and also add repetition for a specific period of time, so you won't forget about your duties and get the job done.",
+		"description": "In this app you can configure and manage your tasks for a specific day and also add repetition for a specific period of time, so you won't forget about your duties and get the job done.",
 		"slug": "daily-tasks",
 		"privacy": "public",
 		"platforms": ["ios", "android"],
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/daily-tasks.png",
+		"icon": "./assets/icon.png",
 		"splash": {
-			"image": "./assets/daily-splash.png",
+			"image": "./assets/splash.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#101010"
 		},
@@ -19,18 +19,29 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"bundleIdentifier": "pl.samuelk.daily-tasks",
-			"buildNumber": "1.0.0",
+			"buildNumber": "1.0.1",
 			"supportsTablet": true,
 			"userInterfaceStyle": "dark"
 		},
 		"android": {
 			"package": "pl.samuelk.daily_tasks",
-			"versionCode": 1,
+			"versionCode": 2,
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/daily-adaptive.png",
+				"foregroundImage": "./assets/adaptive.png",
 				"backgroundColor": "#101010"
 			},
 			"permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+		},
+		"androidNavigationBar": {
+			"visible": "immersive",
+			"barStyle": "light-content",
+			"backgroundColor": "#101010"
+		},
+		"androidStatusBar": {
+			"hidden": false,
+			"translucent": true,
+			"barStyle": "light-content",
+			"backgroundColor": "#101010"
 		}
 	}
 }

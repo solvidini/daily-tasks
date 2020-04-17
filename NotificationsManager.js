@@ -54,7 +54,6 @@ const NotificationsManager = (props) => {
 			return false;
 		}
 		if (Constants.isDevice && result.status === 'granted') {
-			console.log('Notifications permissions granted.');
 			return true;
 		}
 		return false;

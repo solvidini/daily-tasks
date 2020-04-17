@@ -28,28 +28,26 @@ const CreateTaskScreen = (props) => {
 	};
 
 	const typeChangeHandler = (text) => {
-		console.log(text);
 		setType(text);
 	};
 
 	const isSequentialChangeHandler = (text) => {
-		console.log(text);
 		setIsSequential(text);
 	};
 
 	const dateChangeHandler = (selectedDate) => {
-		if (Math.floor(new Date().getTime() / 1000) - 100 > Math.floor(new Date(selectedDate).getTime() / 1000)) {
-			Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
-				{
-					text: 'Ok',
-					style: 'default',
-					onPress: () => {
-						hideDatePicker();
-					},
-				},
-			]);
-			return;
-		}
+		// if (new Date().setHours(0, 0, 0, 0) > new Date(selectedDate).getTime()) {
+		// 	Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
+		// 		{
+		// 			text: 'Ok',
+		// 			style: 'default',
+		// 			onPress: () => {
+		// 				hideDatePicker();
+		// 			},
+		// 		},
+		// 	]);
+		// 	return;
+		// }
 		hideDatePicker();
 		setDate(selectedDate);
 	};

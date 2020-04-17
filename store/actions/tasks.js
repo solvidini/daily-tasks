@@ -49,8 +49,13 @@ export const updateTask = (id) => {
 		const allTasks = getState().tasks.allTasks;
 		const task = allTasks.find((t) => t.id === id);
 
-		const oldDate = task.date;
-		const newDate = moment(oldDate).add(task.sequentialInterval, 'days');
+		console.log(task);
+		if (!task) return;
+
+		let newDate = task.date;
+		do {
+			newDate = moment(newDate).add(task.sequentialInterval, 'days');
+		} while (new Date(newDate) < new Date().setHours(0, 0, 0, 0));
 
 		try {
 			await updateTaskDate(id, newDate.toISOString());
@@ -75,6 +80,14 @@ export const loadTasks = () => {
 			const loadedResults = [];
 
 			for (const key in resultArray) {
+				//If task is undone, but is sequential, then update to the next date!
+				if (
+					resultArray[key].isSequential &&
+					new Date(resultArray[key].date) < new Date().setHours(0, 0, 0, 0)
+				) {
+					dispatch(updateTask(resultArray[key].id));
+				}
+
 				loadedResults.push(
 					new Task(
 						resultArray[key].id,
