@@ -17,11 +17,11 @@
 			"fallbackToCacheTimeout": 0
 		},
 		"assetBundlePatterns": ["**/*"],
+		"userInterfaceStyle": "dark",
 		"ios": {
 			"bundleIdentifier": "pl.samuelk.daily-tasks",
 			"buildNumber": "1.0.1",
-			"supportsTablet": true,
-			"userInterfaceStyle": "dark"
+			"supportsTablet": true
 		},
 		"android": {
 			"package": "pl.samuelk.daily_tasks",
