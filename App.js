@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { AppLoading, Constants, Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
+import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import ReduxThunk from 'redux-thunk';
 
 import NotificationsManager from './NotificationsManager';
 import tasksReducer from './store/reducers/tasks';
 import AppNavigator from './navigation/AppNavigator';
-import Colors from './constants/Colors';
 import { init } from './helpers/db';
 
 init()
@@ -27,6 +25,10 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
+/**
+ * Funkcja służąca do załadowania czcionek
+ * @returns {Promise}
+ */
 const fetchFonts = () => {
 	return Font.loadAsync({
 		'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -34,6 +36,9 @@ const fetchFonts = () => {
 	});
 };
 
+/**
+ * Główna funkcja naszej aplikacji, która jest kontenerem wszystkich jej elementów.
+ */
 export default function App() {
 	const [fontLoaded, setFontLoaded] = useState(false);
 

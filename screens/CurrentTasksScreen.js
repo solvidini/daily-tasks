@@ -9,6 +9,11 @@ import Text from '../components/Text';
 import DailyTaskItem from '../components/DailyTaskItem';
 import * as tasksActions from '../store/actions/tasks';
 
+/**
+ * Ekran, na którym wyświetlamy poszczególne zadania na dany dzień oraz zadania do zrobienia w dowolnym czasie.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const CurrentTasksScreen = (props) => {
 	const anyTimeTasks = useSelector((state) => state.tasks.anyTimeTasks);
 	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);

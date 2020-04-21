@@ -9,6 +9,11 @@ import Colors from '../constants/Colors';
 import * as TasksActions from '../store/actions/tasks';
 import Input from '../components/Input';
 
+/**
+ * Ekran, w którym tworzymy zadanie.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const CreateTaskScreen = (props) => {
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('daily');
