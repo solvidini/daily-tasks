@@ -100,7 +100,7 @@ const NotificationsManager = (props) => {
 
 		if (new Date().setHours(20, 0, 0) > new Date() && numberOfTasks > 0) {
 			const schedulingOptions = {
-				time: new Date().setHours(21, 0, 0),
+				time: new Date().setHours(20, 0, 0),
 			};
 			//SEND NOTIFICATION IN THE EVENING
 			Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions);

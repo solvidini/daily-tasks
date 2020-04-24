@@ -119,7 +119,6 @@ const CreateTaskScreen = (props) => {
 						date={date}
 						isVisible={isDatePickerVisible}
 						mode="date"
-						
 						onConfirm={dateChangeHandler}
 						onCancel={hideDatePicker}
 					/>
@@ -152,6 +151,7 @@ const CreateTaskScreen = (props) => {
 						date={date}
 						isVisible={isDatePickerVisible}
 						mode="date"
+						isDarkModeEnabled={true}
 						onConfirm={dateChangeHandler}
 						onCancel={hideDatePicker}
 					/>
