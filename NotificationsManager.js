@@ -55,7 +55,6 @@ const NotificationsManager = (props) => {
 	};
 
 	const setNotifications = useCallback(() => {
-		// console.log('setNotifications', new Date(), moment(2, 'minutes'));
 		const numberOfTasks = dailyTasks.length;
 
 		const weeklySchedulingOptions = {
@@ -65,6 +64,11 @@ const NotificationsManager = (props) => {
 		let morningSchedulingOptions;
 
 		let localNotification = {
+			title: 'Daily tasks',
+			body: `You have ${numberOfTasks} tasks left for today. Click here to manage your tasks!`,
+		};
+
+		let morningNotification = {
 			title: 'Daily tasks',
 			body: `You have ${numberOfTasks} tasks left for today. Click here to manage your tasks!`,
 		};
@@ -85,11 +89,11 @@ const NotificationsManager = (props) => {
 			morningSchedulingOptions = {
 				time: new Date().setHours(31, 0, 0),
 			};
-			localNotification.body = 'Click to set some new tasks!';
+			morningNotification.body = 'Click to set some new tasks!';
 		}
 
 		//SEND NOTIFICATION IN THE MORNING // IN THE MORNING NEXT DAY
-		Notifications.scheduleLocalNotificationAsync(localNotification, morningSchedulingOptions);
+		Notifications.scheduleLocalNotificationAsync(morningNotification, morningSchedulingOptions);
 
 		if (new Date().setHours(15, 0, 0) > new Date() && numberOfTasks > 0) {
 			const schedulingOptions = {
