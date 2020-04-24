@@ -7,6 +7,11 @@ import moment from 'moment';
 
 const basicNotification = { title: 'Daily tasks', body: 'Remember about your daily tasks!' };
 
+/**
+ * Komponent implementujący całą logikę odnośnie powiadomień stosowanych w aplikacji.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const NotificationsManager = (props) => {
 	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);
 

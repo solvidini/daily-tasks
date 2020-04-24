@@ -25,6 +25,10 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
+/**
+ * Funkcja służąca do załadowania czcionek
+ * @returns {Promise}
+ */
 const fetchFonts = () => {
 	return Font.loadAsync({
 		'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -32,6 +36,9 @@ const fetchFonts = () => {
 	});
 };
 
+/**
+ * Główna funkcja naszej aplikacji, która jest kontenerem wszystkich jej elementów.
+ */
 export default function App() {
 	const [fontLoaded, setFontLoaded] = useState(false);
 

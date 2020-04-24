@@ -10,6 +10,9 @@ import AllTasksScreen, { screenOptions as AllTasksScreenOptions } from '../scree
 import CreateTaskScreen, { screenOptions as CreateTaskScreenOptions } from '../screens/CreateTaskScreen';
 import Colors from '../constants/Colors';
 
+/**
+ * Obiekt przekazujący opcje domyślne do nawigatorów
+ */
 const defaultOptions = {
 	headerStyle: {
 		backgroundColor: Platform.OS === 'android' ? Colors.primary : 'black',
@@ -26,6 +29,11 @@ const defaultOptions = {
 
 const DailyTasksStackNavigator = createStackNavigator();
 
+/**
+ * Komponent nawigacyjny zarządzający stosem ekranów przekazywanych we właściwościach "component" danego ekranu
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const DailyTasksNavigator = () => {
 	return (
 		<DailyTasksStackNavigator.Navigator screenOptions={defaultOptions}>
@@ -45,6 +53,11 @@ const DailyTasksNavigator = () => {
 
 const AllTasksStackNavigator = createStackNavigator();
 
+/**
+ * Komponent nawigacyjny zarządzający stosem ekranów przekazywanych we właściwościach "component" danego ekranu
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const AllTasksNavigator = () => {
 	return (
 		<AllTasksStackNavigator.Navigator screenOptions={defaultOptions}>
@@ -66,6 +79,11 @@ const tabBarOptions = {
 
 const TasksBottomTabNavigator = createBottomTabNavigator();
 
+/**
+ * Komponent nawigacyjny dający nam możliwość nawigacji przez dolny pasek nawigacji.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const TasksNavigator = () => {
 	return (
 		<TasksBottomTabNavigator.Navigator tabBarOptions={tabBarOptions}>
@@ -99,6 +117,11 @@ const TasksNavigator = () => {
 	);
 };
 
+/**
+ * Kontener na komponenty nawigacyjne.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ */
 const AppNavigator = (props) => {
 	return (
 		<NavigationContainer>
