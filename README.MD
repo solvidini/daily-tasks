@@ -12,7 +12,7 @@ Main technologies I used to create this app:
 &other
 	
 ## Live
-during development
+https://expo.io/@ssazero/daily-tasks
 
 ## Author
 Samuel Kędziora
