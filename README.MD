@@ -1,4 +1,4 @@
-## General info
+# Daily Tasks
 This is a mobile application created with the help of React Native. 
 In this app you can configure your tasks for a specific day and also add repetition for a specific period of time, so you won't forget about your duties and get the job done.
 	
@@ -12,4 +12,7 @@ Main technologies I used to create this app:
 &other
 	
 ## Live
-during development
+https://expo.io/@ssazero/daily-tasks
+
+## Author
+Samuel Kędziora
