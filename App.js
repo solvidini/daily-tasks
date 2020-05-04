@@ -37,7 +37,7 @@ const fetchFonts = () => {
 };
 
 /**
- * Główna funkcja naszej aplikacji, która jest kontenerem wszystkich jej elementów.
+ * Główna funkcja aplikacji, która jest kontenerem wszystkich jej elementów.
  */
 export default function App() {
 	const [fontLoaded, setFontLoaded] = useState(false);
