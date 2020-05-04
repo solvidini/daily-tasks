@@ -2,6 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 
+/**
+ * Komponent implementujący własne rozwiązanie przycisku typu radio.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ * @memberof module:Komponenty
+*/
 const RadioButton = (props) => {
 	return <View style={styles.main}>{props.selected ? <View style={styles.selected} /> : null}</View>;
 };

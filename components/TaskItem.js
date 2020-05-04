@@ -4,6 +4,12 @@ import { StyleSheet, View, Button, Alert } from 'react-native';
 import Colors from '../constants/Colors';
 import Text from './Text';
 
+/**
+ * Komponent do zarządzania zadaniami na ekranie allTasks.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ * @memberof module:Komponenty
+*/
 const TaskItem = (props) => {
 	const deleteHandler = () => {
 		Alert.alert('Are you sure?', 'Do you really want to delete this task?', [

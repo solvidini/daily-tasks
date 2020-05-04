@@ -28,6 +28,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 /**
  * Funkcja służąca do załadowania czcionek
  * @returns {Promise}
+ * @module Czcionki
  */
 const fetchFonts = () => {
 	return Font.loadAsync({
@@ -37,7 +38,8 @@ const fetchFonts = () => {
 };
 
 /**
- * Główna funkcja naszej aplikacji, która jest kontenerem wszystkich jej elementów.
+ * Główna funkcja aplikacji, która jest kontenerem wszystkich jej elementów.
+ * @module Funkcja główna aplikacji
  */
 export default function App() {
 	const [fontLoaded, setFontLoaded] = useState(false);

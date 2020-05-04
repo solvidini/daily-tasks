@@ -9,6 +9,11 @@ const initialState = {
 	allTasks: [],
 };
 
+/**
+ * Reducer aplikacji. Służy do rozpoznania i zarządzania wysłanymi akcjami, a następnie aktualizacją przechowalni stanów
+ * 
+ * @module Reducer
+ */
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case SET_TASKS:

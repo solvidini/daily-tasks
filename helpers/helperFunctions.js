@@ -3,7 +3,8 @@
  * 
  * @param {Date} someDate - przekazywana data
  * @returns {boolean}
- */
+ * @module Funkcje pomocnicze
+*/
 export const isToday = (someDate) => {
 	const today = new Date();
 	return (

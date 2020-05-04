@@ -13,7 +13,8 @@ import * as tasksActions from '../store/actions/tasks';
  * Ekran, który wyświetla nam w zależności od wyboru listy wszystkich zadań, bądź jedynie zadań sekwencyjnych.
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Ekrany
+*/
 const AllTasksScreen = (props) => {
 	const sequentialTasks = useSelector((state) => state.tasks.sequentialTasks);
 	const allTasks = useSelector((state) => state.tasks.allTasks);

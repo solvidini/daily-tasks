@@ -1,3 +1,7 @@
+/**
+* @module Nawigacja
+*/
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,7 +16,8 @@ import Colors from '../constants/Colors';
 
 /**
  * Obiekt przekazujący opcje domyślne do nawigatorów
- */
+ * @memberof module:Nawigacja
+*/
 const defaultOptions = {
 	headerStyle: {
 		backgroundColor: Platform.OS === 'android' ? Colors.primary : 'black',
@@ -33,7 +38,8 @@ const DailyTasksStackNavigator = createStackNavigator();
  * Komponent nawigacyjny zarządzający stosem ekranów przekazywanych we właściwościach "component" danego ekranu
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Nawigacja
+*/
 const DailyTasksNavigator = () => {
 	return (
 		<DailyTasksStackNavigator.Navigator screenOptions={defaultOptions}>
@@ -57,7 +63,8 @@ const AllTasksStackNavigator = createStackNavigator();
  * Komponent nawigacyjny zarządzający stosem ekranów przekazywanych we właściwościach "component" danego ekranu
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Nawigacja
+*/
 const AllTasksNavigator = () => {
 	return (
 		<AllTasksStackNavigator.Navigator screenOptions={defaultOptions}>
@@ -83,7 +90,8 @@ const TasksBottomTabNavigator = createBottomTabNavigator();
  * Komponent nawigacyjny dający nam możliwość nawigacji przez dolny pasek nawigacji.
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Nawigacja
+*/
 const TasksNavigator = () => {
 	return (
 		<TasksBottomTabNavigator.Navigator tabBarOptions={tabBarOptions}>
@@ -121,7 +129,8 @@ const TasksNavigator = () => {
  * Kontener na komponenty nawigacyjne.
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Nawigacja
+*/
 const AppNavigator = (props) => {
 	return (
 		<NavigationContainer>

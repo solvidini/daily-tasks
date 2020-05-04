@@ -1,3 +1,7 @@
+/**
+ * Obiekt przechowujący użyte w aplikacji kolory.
+ * @module Stałe - Kolory
+ */
 export default {
 	primary: '#101010',
 	accent: '#F4B312',

@@ -26,6 +26,12 @@ const inputReducer = (state, action) => {
 	}
 };
 
+/**
+ * Komponent do utworzenia pola tekstowego, bądź pól wyboru wraz z walidacją.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ * @memberof module:Komponenty
+*/
 const Input = (props) => {
 	const [inputState, dispatch] = useReducer(inputReducer, {
 		value: props.initialValue ? props.initialValue : '',

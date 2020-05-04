@@ -13,7 +13,8 @@ import Input from '../components/Input';
  * Ekran, w którym tworzymy zadanie.
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Ekrany
+*/
 const CreateTaskScreen = (props) => {
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('daily');

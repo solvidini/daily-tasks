@@ -1,3 +1,7 @@
+/**
+* @module Akcje 
+*/
+
 import moment from 'moment';
 
 export const CREATE_TASK = 'CREATE_TASK';
@@ -9,6 +13,17 @@ import { fetchTasks, insertTask, deleteTask, updateTaskDate } from '../../helper
 import { isToday } from '../../helpers/helperFunctions';
 import Task from '../../models/task';
 
+/**
+ * Funkcja będąca akcją utworzenia zadania.
+ * 
+ * @param {string} title - tytuł zadania
+ * @param {string} type - typ zadania
+ * @param {boolean} isSequential - czy zadanie jest sekwencyjne
+ * @param {Date} date - data zadania
+ * @param {number} sequentialInterval - co ile zadanie ma się powtarzać
+ * @returns {Promise} - zwraca obietnicę, która przy rozwiązaniu wysyła akcję do reducer
+ * @memberof module:Akcje 
+*/
 export const createTask = (title, type, isSequential, date, sequentialInterval) => {
 	return async (dispatch) => {
 		try {
@@ -29,6 +44,13 @@ export const createTask = (title, type, isSequential, date, sequentialInterval) 
 	};
 };
 
+/**
+ * Funkcja będąca akcją usunięcia zadania.
+ * 
+ * @param {number} id - identyfikator zadania
+ * @returns {Promise} - zwraca obietnicę, która przy rozwiązaniu wysyła akcję do reducer
+ * @memberof module:Akcje 
+*/
 export const removeTask = (id) => {
 	return async (dispatch) => {
 		try {
@@ -44,6 +66,13 @@ export const removeTask = (id) => {
 	};
 };
 
+/**
+ * Funkcja będąca akcją zaktualizowania zadania.
+ * 
+ * @param {number} id - identyfikator zadania
+ * @returns {Promise} - zwraca obietnicę, która przy rozwiązaniu wysyła akcję do reducer
+ * @memberof module:Akcje 
+*/
 export const updateTask = (id) => {
 	return async (dispatch, getState) => {
 		const allTasks = getState().tasks.allTasks;
@@ -72,6 +101,12 @@ export const updateTask = (id) => {
 	};
 };
 
+/**
+ * Funkcja będąca akcją załadowania zadań.
+ * 
+ * @returns {Promise} - zwraca obietnicę, która przy rozwiązaniu wysyła akcję do reducer
+ * @memberof module:Akcje 
+*/
 export const loadTasks = () => {
 	return async (dispatch) => {
 		try {

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screens/CreateTaskScreen.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screens/CreateTaskScreen.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import { View, StyleSheet, Button, TouchableHighlight, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
+import Text from '../components/Text';
+import Colors from '../constants/Colors';
+import * as TasksActions from '../store/actions/tasks';
+import Input from '../components/Input';
+
+/**
+ * Ekran, w którym tworzymy zadanie.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ * @memberof module:Ekrany
+*/
+const CreateTaskScreen = (props) => {
+	const [title, setTitle] = useState('');
+	const [type, setType] = useState('daily');
+	const [isSequential, setIsSequential] = useState(false);
+	const [date, setDate] = useState(new Date());
+	const [sequentialInterval, setSequentialInterval] = useState('');
+
+	const [titleValidity, setTitleValidity] = useState(false);
+	const [sequentialIntervalValidity, setSequentialIntervalValidity] = useState(false);
+
+	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const dispatch = useDispatch();
+
+	const titleChangeHandler = (text, isValid) => {
+		setTitle(text);
+		setTitleValidity(isValid);
+	};
+
+	const typeChangeHandler = (text) => {
+		setType(text);
+	};
+
+	const isSequentialChangeHandler = (text) => {
+		setIsSequential(text);
+	};
+
+	const dateChangeHandler = (selectedDate) => {
+		if (new Date().setHours(0, 0, 0, 0) > new Date(selectedDate).getTime()) {
+			Alert.alert('Error occurred', 'Date must be equal or greater than today.', [
+				{
+					text: 'Ok',
+					style: 'default',
+					onPress: () => {
+						hideDatePicker();
+					},
+				},
+			]);
+			return;
+		}
+		hideDatePicker();
+		setDate(selectedDate);
+	};
+
+	const sequentialIntervalChangeHandler = (text, isValid) => {
+		setSequentialInterval(text);
+		setSequentialIntervalValidity(isValid);
+	};
+
+	const submitHandler = () => {
+		if (titleValidity &amp;&amp; type === 'anyTime') {
+			dispatch(TasksActions.createTask(title, type, isSequential, date, sequentialInterval));
+			props.navigation.goBack();
+			return;
+		}
+		if (!titleValidity || (isSequential &amp;&amp; !sequentialIntervalValidity)) {
+			Alert.alert('Wrong input!', 'Please check the errors in the form.', [{ text: 'Okay' }]);
+			return;
+		}
+		dispatch(TasksActions.createTask(title, type, isSequential, date, sequentialInterval));
+		props.navigation.goBack();
+	};
+
+	const showDatePicker = () => {
+		setDatePickerVisibility(true);
+	};
+
+	const hideDatePicker = () => {
+		setDatePickerVisibility(false);
+	};
+
+	let options;
+
+	if (type !== 'anyTime' &amp;&amp; isSequential) {
+		options = (
+			&lt;>
+				&lt;Input
+					label="Repeat?"
+					type="switch"
+					initiallyValid
+					onInputChange={isSequentialChangeHandler}
+					initialValue={false}
+					value={isSequential}
+					maxLength={24}
+				/>
+				&lt;Input
+					label="Repeat every"
+					repeat
+					required
+					errorText="Days field must be greater than 0."
+					onInputChange={sequentialIntervalChangeHandler}
+					value={sequentialInterval}
+					keyboardType="numeric"
+					maxLength={3}
+					min={1}
+				/>
+				&lt;View style={styles.formControl}>
+					&lt;Text style={styles.label}>When?&lt;/Text>
+					&lt;TouchableHighlight style={styles.datePickerButton} title="Select date" onPress={showDatePicker}>
+						&lt;Text style={styles.dateText}>
+							{new Date(date).getDate().toString() +
+								'-' +
+								new Date(date).getMonth().toString() +
+								'-' +
+								new Date(date).getFullYear().toString()}
+						&lt;/Text>
+					&lt;/TouchableHighlight>
+					&lt;DateTimePickerModal
+						date={date}
+						isVisible={isDatePickerVisible}
+						mode="date"
+						isDarkModeEnabled
+						onConfirm={dateChangeHandler}
+						onCancel={hideDatePicker}
+					/>
+				&lt;/View>
+			&lt;/>
+		);
+	} else if (type !== 'anyTime' &amp;&amp; !isSequential) {
+		options = (
+			&lt;>
+				&lt;Input
+					label="Repeat?"
+					type="switch"
+					initialValue={false}
+					initiallyValid
+					onInputChange={isSequentialChangeHandler}
+					value={isSequential}
+				/>
+				&lt;View style={styles.formControl}>
+					&lt;Text style={styles.label}>When?&lt;/Text>
+					&lt;TouchableHighlight style={styles.datePickerButton} title="Select date" onPress={showDatePicker}>
+						&lt;Text style={styles.dateText}>
+							{new Date(date).getDate().toString() +
+								'-' +
+								new Date(date).getMonth().toString() +
+								'-' +
+								new Date(date).getFullYear().toString()}
+						&lt;/Text>
+					&lt;/TouchableHighlight>
+					&lt;DateTimePickerModal
+						date={date}
+						isVisible={isDatePickerVisible}
+						mode="date"
+						onConfirm={dateChangeHandler}
+						onCancel={hideDatePicker}
+					/>
+				&lt;/View>
+			&lt;/>
+		);
+	}
+
+	return (
+		&lt;KeyboardAwareScrollView style={styles.screen}>
+			&lt;View style={styles.form}>
+				&lt;Input
+					label="Title"
+					required
+					errorText="Title field cannot be empty."
+					onInputChange={titleChangeHandler}
+					value={title}
+					maxLength={36}
+				/>
+				&lt;Input
+					label="Type"
+					type="picker"
+					initialValue="daily"
+					initiallyValid
+					onInputChange={typeChangeHandler}
+					value={type}
+				/>
+				{options}
+				&lt;View style={styles.buttonContainer}>
+					&lt;Button color={Colors.accent} title="CREATE" onPress={submitHandler} />
+				&lt;/View>
+			&lt;/View>
+		&lt;/KeyboardAwareScrollView>
+	);
+};
+
+export const screenOptions = (navData) => {
+	return {
+		headerTitle: 'Create a Task!',
+	};
+};
+
+const styles = StyleSheet.create({
+	screen: {
+		flex: 1,
+		backgroundColor: 'black',
+	},
+	form: {
+		margin: 20,
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	formControl: {
+		flexDirection: 'row',
+		marginVertical: 10,
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		width: '80%',
+	},
+	label: {
+		color: Colors.accent,
+		marginRight: 10,
+	},
+	dateText: {
+		fontSize: 18,
+	},
+	buttonContainer: {
+		marginVertical: 10,
+	},
+});
+
+export default CreateTaskScreen;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Akcje.html">Akcje</a></li><li><a href="module-Czcionki.html">Czcionki</a></li><li><a href="module-Ekrany.html">Ekrany</a></li><li><a href="module-Funkcja%2520g%25C5%2582%25C3%25B3wna%2520aplikacji.html">Funkcja główna aplikacji</a></li><li><a href="module-Funkcje%2520pomocnicze.html">Funkcje pomocnicze</a></li><li><a href="module-Klasy.html">Klasy</a></li><li><a href="module-Komponenty.html">Komponenty</a></li><li><a href="module-Nawigacja.html">Nawigacja</a></li><li><a href="module-Powiadomienia.html">Powiadomienia</a></li><li><a href="module-Reducer.html">Reducer</a></li><li><a href="module-SQLite.html">SQLite</a></li><li><a href="module-Sta%25C5%2582e%2520-%2520Kolory.html">Stałe - Kolory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Tue Apr 21 2020 21:25:49 GMT+0200 (GMT+02:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

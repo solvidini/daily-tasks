@@ -1,3 +1,7 @@
+/**
+ * @module Komponenty
+ */
+
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
@@ -5,6 +9,12 @@ import Text from './Text';
 import RadioButton from './RadioButton';
 import Colors from '../constants/Colors';
 
+/**
+ * Komponent do zarządzania zadaniami na ekranie currentTasks.
+ * 
+ * @param {Object} props - właściwości przekazywane do komponentu.  
+ * @memberof module:Komponenty
+*/
 const DailyTaskItem = (props) => {
 	const [isSelected, setIsSelected] = useState(false);
 	const [intervalStatus, setIntervalStatus] = useState(3);

@@ -1,3 +1,7 @@
+/**
+* @module Ekrany
+*/
+
 import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet, Button, Platform, FlatList, SafeAreaView } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -13,7 +17,8 @@ import * as tasksActions from '../store/actions/tasks';
  * Ekran, na którym wyświetlamy poszczególne zadania na dany dzień oraz zadania do zrobienia w dowolnym czasie.
  * 
  * @param {Object} props - właściwości przekazywane do komponentu.  
- */
+ * @memberof module:Ekrany
+*/
 const CurrentTasksScreen = (props) => {
 	const anyTimeTasks = useSelector((state) => state.tasks.anyTimeTasks);
 	const dailyTasks = useSelector((state) => state.tasks.dailyTasks);
